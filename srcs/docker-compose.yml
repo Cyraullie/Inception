@@ -3,7 +3,7 @@ services:
   mysql:
     image: mariadb
     volumes:
-      - ./requirements/mariadb/data:/var/lib/mysql
+      - db_volume:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: mysql_root_pass
       MYSQL_DATABASE: db_name
@@ -15,7 +15,7 @@ services:
   wordpress:
     image: wordpress:php7.3-fpm-alpine
     volumes:
-      - ./requirements/wordpress:/var/www/html
+      - wp_volume:/var/www/html
     depends_on:
       - mysql
     environment:
@@ -32,7 +32,7 @@ services:
     image: nginx:alpine
     volumes:
       - ./requirements/nginx/conf:/etc/nginx/conf.d
-      - ./requirements/wordpress:/var/www/html
+      - wp_volume:/var/www/html
     ports:
       - "8080:80"
     networks:
@@ -40,3 +40,8 @@ services:
 networks:
   frontend:
     driver: bridge
+volumes:
+  db_volume:
+    external: true
+  wp_volume:
+    external: true
