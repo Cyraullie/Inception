@@ -1,1 +1,4 @@
 .vscode/settings.json
+srcs/requirements/mariadb/conf/*
+srcs/requirements/mariadb/conf/*/*
+srcs/requirements/wordpress/*
