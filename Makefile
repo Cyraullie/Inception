@@ -6,7 +6,7 @@
 #    By: cgoldens <cgoldens@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/19 15:29:22 by cgoldens          #+#    #+#              #
-#    Updated: 2025/11/21 14:35:35 by cgoldens         ###   ########.fr        #
+#    Updated: 2025/11/21 15:14:56 by cgoldens         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ YELLOW = \033[1;33m
 RESET = \033[0m
 
 # Règles
-all: header $(NAME)
+up: header $(NAME)
 
 header:
 	@echo "$(GREEN)"
@@ -38,14 +38,16 @@ header:
 
 $(NAME):
 	@echo "$(YELLOW)Launching docker container...$(RESET)"
+	@docker volume create db-data
+	@docker volume create wp-data
 	@docker compose $(DCPATH) up -d
 	@echo "$(CYAN)Launching completed!$(RESET)"
 
-stop:
+down:
 	@echo "$(YELLOW)Stopping docker container...$(RESET)"
 	@docker compose $(DCPATH) down
 	@echo "$(CYAN)Docker container stopped !$(RESET)"
 
-re: stop all
+re: stop up
 
-.PHONY: all stop re
+.PHONY: up stop re

@@ -2,3 +2,4 @@
 srcs/requirements/mariadb/conf/*
 srcs/requirements/mariadb/conf/*/*
 srcs/requirements/wordpress/*
+srcs/.env
