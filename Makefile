@@ -6,22 +6,13 @@
 #    By: cgoldens <cgoldens@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/19 15:29:22 by cgoldens          #+#    #+#              #
-#    Updated: 2025/11/19 15:34:43 by cgoldens         ###   ########.fr        #
+#    Updated: 2025/11/21 14:35:35 by cgoldens         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = RPN
+DCPATH = -f ./srcs/docker-compose.yml
 
-SRCDIR = ./
-INCDIR = ./
-OBJDIR = ./build/
-
-CC = c++
-CFLAGS = -Wall -Wextra -Werror -std=c++98
 RM = rm -rf
-
-SRCS = $(shell find $(SRCDIR) -type f -name "*.cpp")
-OBJS = $(SRCS:$(SRCDIR)%.cpp=$(OBJDIR)%.o)
 
 GREEN = \033[1;32m
 CYAN = \033[1;36m
@@ -44,24 +35,17 @@ header:
 	@echo "BY CGOLDENS"
 	@echo "$(RESET)"
 
-${OBJDIR}%.o: $(SRCDIR)%.cpp
-	@mkdir -p $(dir $@)
-	@$(CC) $(CFLAGS) -I$(INCDIR) -c -o $@ $<
 
-$(NAME): $(OBJS) 
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
-	@echo "$(CYAN)Build completed!$(RESET)"
+$(NAME):
+	@echo "$(YELLOW)Launching docker container...$(RESET)"
+	@docker compose $(DCPATH) up -d
+	@echo "$(CYAN)Launching completed!$(RESET)"
 
-clean:
-	@echo "$(YELLOW)Cleaning object files...$(RESET)"
-	$(RM) $(OBJS)
-	$(RM) $(OBJDIR)
+stop:
+	@echo "$(YELLOW)Stopping docker container...$(RESET)"
+	@docker compose $(DCPATH) down
+	@echo "$(CYAN)Docker container stopped !$(RESET)"
 
-fclean: clean
-	@echo "$(YELLOW)Cleaning $(NAME) binary$(RESET)"
-	$(RM) $(NAME)
+re: stop all
 
-
-re: fclean all
-
-.PHONY: all clean fclean re
+.PHONY: all stop re
