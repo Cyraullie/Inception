@@ -35,7 +35,7 @@ services:
       - ./requirements/nginx/conf:/etc/nginx/conf.d
       - wp-data:/var/www/html
     ports:
-      - "8080:80"
+      - "443:9000"
     networks:
       - frontend
 networks:
@@ -43,6 +43,14 @@ networks:
     driver: bridge
 volumes:
   db-data:
-    external: true
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/${USER}/data/mysql
   wp-data:
-    external: true
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/${USER}/data/wordpress

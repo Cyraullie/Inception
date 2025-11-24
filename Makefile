@@ -6,7 +6,7 @@
 #    By: cgoldens <cgoldens@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/19 15:29:22 by cgoldens          #+#    #+#              #
-#    Updated: 2025/11/21 15:14:56 by cgoldens         ###   ########.fr        #
+#    Updated: 2025/11/24 14:22:13 by cgoldens         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,8 +38,7 @@ header:
 
 $(NAME):
 	@echo "$(YELLOW)Launching docker container...$(RESET)"
-	@docker volume create db-data
-	@docker volume create wp-data
+	@mkdir -p /home/cgoldens/data/
 	@docker compose $(DCPATH) up -d
 	@echo "$(CYAN)Launching completed!$(RESET)"
 
@@ -48,6 +47,6 @@ down:
 	@docker compose $(DCPATH) down
 	@echo "$(CYAN)Docker container stopped !$(RESET)"
 
-re: stop up
+re: down up
 
-.PHONY: up stop re
+.PHONY: up down re
