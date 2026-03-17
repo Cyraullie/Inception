@@ -10,7 +10,7 @@ COPY ssl /etc/nginx/ssl
 # COPY html /var/www/html
 
 # Expose le port HTTP
-EXPOSE 9000
+EXPOSE 443
 
 # Commande Nginx standard
 CMD ["nginx", "-g", "daemon off;"]
