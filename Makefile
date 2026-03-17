@@ -6,7 +6,7 @@
 #    By: cgoldens <cgoldens@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/19 15:29:22 by cgoldens          #+#    #+#              #
-#    Updated: 2025/11/24 14:22:13 by cgoldens         ###   ########.fr        #
+#    Updated: 2026/03/17 14:04:40 by cgoldens         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ YELLOW = \033[1;33m
 RESET = \033[0m
 
 # Règles
-up: header $(NAME)
+up: header run
 
 header:
 	@echo "$(GREEN)"
@@ -36,7 +36,7 @@ header:
 	@echo "$(RESET)"
 
 
-$(NAME):
+run:
 	@echo "$(YELLOW)Launching docker container...$(RESET)"
 	@mkdir -p /home/cgoldens/data/
 	@docker compose $(DCPATH) up -d
