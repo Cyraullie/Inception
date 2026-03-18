@@ -6,7 +6,7 @@
 #    By: cgoldens <cgoldens@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/19 15:29:22 by cgoldens          #+#    #+#              #
-#    Updated: 2026/03/17 15:38:59 by cgoldens         ###   ########.fr        #
+#    Updated: 2026/03/18 15:49:45 by cgoldens         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,6 +39,8 @@ header:
 up:
 	@echo "$(YELLOW)Launching docker container...$(RESET)"
 	@mkdir -p /home/cgoldens/data/
+	@mkdir -p /home/cgoldens/data/mariadb
+	@mkdir -p /home/cgoldens/data/wordpress
 	@docker compose $(DCPATH) up -d
 	@echo "$(CYAN)Launching completed!$(RESET)"
 
