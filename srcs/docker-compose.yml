@@ -5,6 +5,12 @@ services:
       context: ./requirements/mariadb
       dockerfile: Dockerfile
     restart: always
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${SQL_ROOT_PASSWORD}"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
     environment:
       SQL_ROOT_PASSWORD: ${SQL_ROOT_PASSWORD}
       SQL_DATABASE: ${SQL_DATABASE}
@@ -22,7 +28,8 @@ services:
       dockerfile: Dockerfile
     restart: always
     depends_on:
-      - mariadb
+      mariadb:
+        condition: service-healthy
     environment:
       DOMAIN_NAME: ${DOMAIN_NAME}
       SQL_DATABASE: ${SQL_DATABASE}
