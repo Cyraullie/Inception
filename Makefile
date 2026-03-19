@@ -6,7 +6,7 @@
 #    By: cgoldens <cgoldens@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/19 15:29:22 by cgoldens          #+#    #+#              #
-#    Updated: 2026/03/19 13:54:18 by cgoldens         ###   ########.fr        #
+#    Updated: 2026/03/19 17:49:39 by cgoldens         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,6 +56,6 @@ fclean: down
 	sudo docker system prune -af
 
 
-re: down up
+re: fclean up
 
 .PHONY: all up down re fclean
