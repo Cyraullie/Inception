@@ -2,8 +2,8 @@ FROM debian:bullseye-slim
 
 RUN apt-get update && apt-get install -y \
     nginx \
-    openssl \
-    && rm -rf /var/lib/apt/lists/*
+    openssl 
+    #&& rm -rf /var/lib/apt/lists/*
 
 # dossier pour les certificats
 RUN mkdir -p /etc/nginx/ssl
