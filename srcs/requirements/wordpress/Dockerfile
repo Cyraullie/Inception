@@ -1,4 +1,4 @@
-FROM debian:bullseye-slim
+FROM debian:bookworm
 
 # installation de tout
 # - php8.2-fpm : Le moteur PHP qui va exécuter le code WordPress
@@ -6,8 +6,8 @@ FROM debian:bullseye-slim
 # - mariadb-client : Pour avoir la commande 'mariadb-admin ping' (attendre la DB)
 # - curl : Pour télécharger WP-CLI
 RUN apt-get update && apt-get install -y \
-    php-fpm \
-    php-mysql \
+    php8.2-fpm \
+    php8.2-mysql \
     mariadb-client \
     curl \
     && rm -rf /var/lib/apt/lists/*
