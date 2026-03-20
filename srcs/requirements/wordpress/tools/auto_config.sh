@@ -4,10 +4,6 @@ until mysqladmin ping -h"mariadb" -u"${SQL_USER}" -p"${SQL_PASSWORD}" --silent 2
     sleep 2
 done
 
-until redis-cli -h redis ping 2>/dev/null; do
-    sleep 2
-done
-
 if [ ! -f "/var/www/html/wp-includes/version.php" ]; then
     wp core download --allow-root --path='/var/www/html'
     chown -R www-data:www-data /var/www/html
@@ -35,5 +31,6 @@ if [ ! -f "/var/www/html/wp-config.php" ]; then
                         --role=author \
                         --path='/var/www/html'
 fi
+
 
 exec "$@"
