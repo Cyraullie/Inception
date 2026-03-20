@@ -38,3 +38,5 @@ EXPOSE 9000
 
 # lancement du script au demarrage
 ENTRYPOINT ["/usr/local/bin/auto_config.sh"]
+
+CMD ["php-fpm8.2", "-F"]
