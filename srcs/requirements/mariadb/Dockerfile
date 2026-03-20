@@ -1,4 +1,3 @@
-FROM mariadb
 FROM debian:bullseye-slim
 
 # installation du serveur
@@ -22,4 +21,4 @@ EXPOSE 3306
 # run via le script
 ENTRYPOINT ["/usr/local/bin/script.sh"]
 
-CMD ["mysqld"]
+CMD ["mariadb-safe"]
