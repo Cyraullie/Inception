@@ -1,41 +1,35 @@
-#!/bin/bash
-set -e
+#!/bin/sh
 
-# 1. On vérifie si le dossier système 'mysql' existe.
-# S'il n'existe pas, c'est que MariaDB n'est pas installé ou que le volume est vide.
-if [ ! -d "/var/lib/mysql/mysql" ]; then
-    echo "Initialisation de MariaDB..."
+# create socket directory
+mkdir -p /run/mysqld
+chown mysql:mysql /run/mysqld
 
-    # Installation des fichiers systèmes et des tables de base
-    mariadb-install-db --user=mysql --datadir=/var/lib/mysql > /dev/null
+# only do initialization if database doesn't exist
+if [ ! -d "/var/lib/mysql/${SQL_DATABASE}" ]; then
+    service mariadb start
+    until mysqladmin ping >/dev/null 2>&1; do
+        echo "Waiting for MariaDB..."
+        sleep 1
+    done
 
-    # Préparation du SQL d'initialisation
-    cat << EOF > /tmp/init.sql
-USE mysql;
-FLUSH PRIVILEGES;
+    # create database from .env
+    mysql -e "CREATE DATABASE IF NOT EXISTS \`${SQL_DATABASE}\`;"
 
--- Création de la DB du projet
-CREATE DATABASE IF NOT EXISTS \`$SQL_DATABASE\`;
+    # create database user from .env (allow connections from any host)
+    mysql -e "CREATE USER IF NOT EXISTS \`${SQL_USER}\`@'%' IDENTIFIED BY '${SQL_PASSWORD}';"
 
--- Création de l'utilisateur
-CREATE USER IF NOT EXISTS \`$SQL_USER\`@'%' IDENTIFIED BY '$SQL_PASSWORD';
-GRANT ALL PRIVILEGES ON \`$SQL_DATABASE\`.* TO \`$SQL_USER\`@'%';
+    # grant privileges for database to new user
+    mysql -e "GRANT ALL PRIVILEGES ON \`${SQL_DATABASE}\`.* TO \`${SQL_USER}\`@'%';"
 
--- Sécurisation Root
-ALTER USER 'root'@'localhost' IDENTIFIED BY '$SQL_ROOT_PASSWORD';
-FLUSH PRIVILEGES;
-EOF
+    # change root user password
+    mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${SQL_ROOT_PASSWORD}';"
 
-    # Exécution du bootstrap
-    mysqld --user=mysql --bootstrap < /tmp/init.sql
-    rm -f /tmp/init.sql
+    # refresh to apply
+    mysql -e "FLUSH PRIVILEGES;"
 
-    echo "Base de données configurée avec succès."
+    # shutdown mysql
+    mysqladmin -u root -p"${SQL_ROOT_PASSWORD}" shutdown
 fi
 
-# 2. Lancement officiel
-# On utilise exec pour que mysqld prenne le PID 1
-echo "Démarrage du serveur MariaDB..."
-# exec mysqld_safe
-exec mariadbd --user=mysql --console
-
+# relaunch
+exec mysqld --user=mysql
