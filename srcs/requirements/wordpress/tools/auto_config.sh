@@ -11,7 +11,6 @@ echo "Attente de MariaDB..."
 echo "Test de connexion vers $SQL_HOST..."
 
 # On tente une connexion simple sans attendre, pour voir l'erreur
-# mariadb-admin ping -h"$SQL_HOST" -u"$SQL_USER" -p"$SQL_PASSWORD"
 
 until mysqladmin ping -h"$SQL_HOST" -u"${SQL_USER}" -p"${SQL_PASSWORD}" --silent 2>/dev/null; do
     sleep 2
@@ -35,18 +34,18 @@ if [ ! -f "/var/www/html/wp-config.php" ]; then
         --dbhost=${SQL_HOST}:3306 \
         --path='/var/www/html'
     wp core install        --allow-root \
-                        --url="https://${DOMAIN_NAME}" \
-                        --title="42 Inception ${DOMAIN_NAME}" \
-                        --admin_user="${WP_ADMIN_USER}" \
-                        --admin_password="${WP_ADMIN_PASSWORD}" \
-                        --admin_email="${WP_ADMIN_EMAIL}" \
-                        --path='/var/www/html'
+        --url="https://${DOMAIN_NAME}" \
+        --title="42 Inception ${DOMAIN_NAME}" \
+        --admin_user="${WP_ADMIN_USER}" \
+        --admin_password="${WP_ADMIN_PASSWORD}" \
+        --admin_email="${WP_ADMIN_EMAIL}" \
+        --path='/var/www/html'
     wp user create        --allow-root \
-                        "${WP_USER}" \
-                        "${WP_EMAIL}" \
-                        --user_pass="${WP_PASSWORD}" \
-                        --role=author \
-                        --path='/var/www/html'
+        "${WP_USER}" \
+        "${WP_EMAIL}" \
+        --user_pass="${WP_PASSWORD}" \
+        --role=author \
+        --path='/var/www/html'
 fi
 
 # --- 3. LANCEMENT DE PHP-FPM ---
