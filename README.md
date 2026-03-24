@@ -17,6 +17,10 @@ The infrastructure is composed of the following services:
 
 ## Instructions
 
+### Requirements
+
+* Docker and Docker compose
+
 ### Compilation and execution
 
 A Makefile at the root of the repository to handle the antire lifecycle of the application:
