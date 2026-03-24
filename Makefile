@@ -6,7 +6,7 @@
 #    By: cgoldens <cgoldens@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/19 15:29:22 by cgoldens          #+#    #+#              #
-#    Updated: 2026/03/19 17:49:39 by cgoldens         ###   ########.fr        #
+#    Updated: 2026/03/24 13:38:09 by cgoldens         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,14 @@ header:
 	@echo "$(RESET)"
 
 
-up:
+check_env:
+	@if [ ! -f .env ]; then \
+		echo "❌ Missing .env file"; \
+		echo "👉 Please create it before running the project"; \
+		exit 1; \
+	fi
+
+up: check_env
 	@echo "$(YELLOW)Launching docker container...$(RESET)"
 	@mkdir -p /home/cgoldens/data/
 	@mkdir -p /home/cgoldens/data/mariadb
@@ -49,13 +56,15 @@ down:
 	@docker compose $(DCPATH) down
 	@echo "$(CYAN)Docker container stopped !$(RESET)"
 
-fclean: down
+clean:
+	sudo docker system prune -af
+
+fclean: clean
 	sudo rm -rf /home/cgoldens/data
 	sudo docker volume rm -f srcs_wp_database
 	sudo docker volume rm -f srcs_wp_files
-	sudo docker system prune -af
 
 
-re: fclean up
+re: down fclean up
 
 .PHONY: all up down re fclean
