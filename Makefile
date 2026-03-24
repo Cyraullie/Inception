@@ -6,7 +6,7 @@
 #    By: cgoldens <cgoldens@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/19 15:29:22 by cgoldens          #+#    #+#              #
-#    Updated: 2026/03/24 13:38:09 by cgoldens         ###   ########.fr        #
+#    Updated: 2026/03/24 13:46:11 by cgoldens         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,21 +36,19 @@ header:
 	@echo "$(RESET)"
 
 
-check_env:
-	@if [ ! -f .env ]; then \
-		echo "❌ Missing .env file"; \
+up:
+	@if [ -f ./srcs/.env ]; then \
+		echo "$(YELLOW)Launching docker container...$(RESET)"; \
+		mkdir -p /home/cgoldens/data/; \
+		mkdir -p /home/cgoldens/data/mariadb; \
+		mkdir -p /home/cgoldens/data/wordpress; \
+		docker compose $(DCPATH) up -d; \
+		echo "$(CYAN)Launching completed!$(RESET)"; \
+	else \
+		echo "❌ Missing ./srcs/.env file"; \
 		echo "👉 Please create it before running the project"; \
-		exit 1; \
 	fi
-
-up: check_env
-	@echo "$(YELLOW)Launching docker container...$(RESET)"
-	@mkdir -p /home/cgoldens/data/
-	@mkdir -p /home/cgoldens/data/mariadb
-	@mkdir -p /home/cgoldens/data/wordpress
-	@docker compose $(DCPATH) up -d
-	@echo "$(CYAN)Launching completed!$(RESET)"
-
+	
 down:
 	@echo "$(YELLOW)Stopping docker container...$(RESET)"
 	@docker compose $(DCPATH) down
