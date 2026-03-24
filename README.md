@@ -1,8 +1,6 @@
 *This project has been created as part of the 42 curriculum by cgoldens.*
 
 
-# Inception - 42 Project
-
 ## Description
 
 **Inception** is a system administration project from the 42 curriculum. Its goal is to introduce virtualization and containerization concepts using Docker.
@@ -21,7 +19,7 @@ The infrastructure is composed of the following services:
 
 ### Compilation and execution
 
-A Makefile
+A Makefile at the root of the repository to handle the antire lifecycle of the application:
 
 ```bash
 make up        # Start containers
@@ -33,10 +31,31 @@ make fclean    # Remove containers + volumes
 
 ### Configuration
 
-* HTTPS using TLSv1.2 or TLSv1.3
-* No hardcoded passwords in Dockerfiles
-* Environment variables stored in `.env`
-* Isolated containers
+1. Ensure a .env file is present in the srcs/ directory with all necessary credentials.
+2. Update your local /etc/hosts file to map the domain: 127.0.0.1 cgoldens.42.fr
+3. Access the site at: https://cgoldens.42.fr
+
+
+---
+
+## Technical Comparisons
+### Virtual Machines vs Docker
+- **Virtual Machines**: Emulate an entire hardware system, including a full guest operating system. This results in high resource consumption and slow startup times.
+- **Docker**: Utilizes containerization to share the host's OS kernel. It is lightweight, starts almost instantly, and ensures environment consistency across different machines.
+
+### Secrets vs Environment Variables
+- **Environment Variables**: Great for non-sensitive configuration but can be exposed via process listings or Docker inspection.
+- **Secrets**: Specifically designed to handle sensitive data (passwords, keys). They are encrypted and only accessible to the authorized services at runtime, providing a higher level of security.
+
+### Docker Network vs Host Network
+- **Host Network**: The container shares the host's networking namespace directly, exposing all container ports to the host's IP.
+- **Docker Network (Bridge)**: Provides an isolated network for containers. Services can communicate with each other using container names, while only specific ports (like 443 for NGINX) are exposed to the outside world.
+
+### Docker Volumes vs Bind Mounts
+- **Bind Mounts**: Rely on the specific directory structure of the host machine, making them less portable.
+- **Docker Volumes**: Managed by Docker itself. In this project, we use **Named Volumes** with a local driver to ensure data persists in the mandatory `/home/cgoldens/data` directory while remaining managed by the Docker engine.
+
+
 
 ---
 
