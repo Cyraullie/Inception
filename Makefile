@@ -6,7 +6,7 @@
 #    By: cgoldens <cgoldens@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/19 15:29:22 by cgoldens          #+#    #+#              #
-#    Updated: 2026/03/24 13:46:11 by cgoldens         ###   ########.fr        #
+#    Updated: 2026/03/24 13:55:55 by cgoldens         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,13 +54,16 @@ down:
 	@docker compose $(DCPATH) down
 	@echo "$(CYAN)Docker container stopped !$(RESET)"
 
+
 clean:
-	sudo docker system prune -af
+	@echo "Removing containers..."
+	@docker compose $(DCPATH) rm -f
 
 fclean: clean
 	sudo rm -rf /home/cgoldens/data
 	sudo docker volume rm -f srcs_wp_database
 	sudo docker volume rm -f srcs_wp_files
+	sudo docker system prune -af
 
 
 re: down fclean up
