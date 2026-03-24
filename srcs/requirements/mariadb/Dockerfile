@@ -1,4 +1,4 @@
-FROM debian:bullseye-slim
+FROM debian:bookworm
 
 # installation du serveur
 RUN apt-get update && apt-get install -y mariadb-server \
